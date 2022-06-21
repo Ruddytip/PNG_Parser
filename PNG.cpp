@@ -1,6 +1,7 @@
 #include "PNG.hpp"
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 PNG_Image::PNG_Image(const std::string fileName){
     std::ifstream fin(fileName, std::ios::binary);
@@ -9,30 +10,15 @@ PNG_Image::PNG_Image(const std::string fileName){
         return;
     }
 
-    // fin.read((char*)&Signature,      sizeof(Signature) * 8);
-    std::cout << 0x0a1a0a0d474e5089 << std::endl;
-    std::cout << *Signature << std::endl;
-    if(*Signature == 0x0a1a0a0d474e5089) std::cout << "signature - OK\n";
-
-    // fin.read((char*)&CHNK.DataLength, sizeof(CHNK.DataLength));
-    // fin.read((char*)&CHNK.Type,       sizeof(CHNK.Type));
-    // if(CHNK.Type == 0x52444849) std::cout << "Type - OK\n";
-
-    // int count = 1;
-
-    // while(true){
-    //     fin.read((char*)&CHNK.DataLength, sizeof(CHNK.DataLength));
-    //     fin.read((char*)&CHNK.Type,       sizeof(CHNK.Type));
-    //     if(CHNK.Type == 0x49484452) break;
-    //     // CHNK.Data = new byte1[CHNK.DataLength];
-    //     fin.read((char*)&CHNK.Data,       sizeof(byte1) * CHNK.DataLength);
-    //     fin.read((char*)&CHNK.Crc,        sizeof(CHNK.Crc));
-    //     std::cout << "chunk " << count++ << " - OK\n";
-    //     // delete[] CHNK.Data;
-    // }
-
+    std::vector<byte1> buffer(std::istreambuf_iterator<char>(fin), {});
     fin.close();
     std::cout << "file close\n";
+    
+    std::string str = "";
+    for(size_t i = 1; i < 4; ++i) str+= buffer[i];
+    if(str == "PNG") std::cout << "sdfsdfsdfsf\n";
+    std::cout << str << std::endl;
+
 }
 
 PNG_Image::~PNG_Image(){
